@@ -1,0 +1,107 @@
+Sub VPButton_Click()
+
+'Unlock VP Overview sheet to allow Macro to run and edit necessary cells
+Sheet1.Unprotect
+
+Dim Cht As ChartObject
+
+'Counters for VP Allocation
+vpkount = 1
+vpdlcell = 12
+
+'Counters for VP Headcount
+vphckount = 1
+vphccell = 16
+
+'Counters for Chart Data Selection
+chartkount = 3
+chartkount2 = 3
+
+
+
+
+'Ensures that the loop does not exceed 20 charts.  There are currently 20 VP Allocation charts
+Do While vpkount <= 21
+    'Sets the intended chart when applying data values
+    Set Cht = Worksheets("VP Overview").ChartObjects("VP " & vpkount)
+    
+    'Stores the range of the cells to be used for the data labels.  The data should be spaced 19 rows from each other.
+    vpcselect = "$A$" & vpdlcell & ":$H$" & vpdlcell
+    vpcselect2 = "='VP Overview'!" & vpcselect
+    
+    'Updates chart data by reselecting data range of each chart
+    Cht.Chart.SetSourceData Source:=Sheets("Qtr Allocation").Range( _
+        "A2:J2,A" & chartkount & ":J" & chartkount), PlotBy:=xlRows
+    
+    'Removes data label positioning and reapplying at top of line
+    Cht.Chart.SetElement (msoElementDataLabelNone)
+    Cht.Chart.SetElement (msoElementDataLabelTop)
+    
+    'Applying data labels
+    Cht.Chart.ApplyDataLabels
+    
+    'Selecting the Label Option 'Value from cells' in Data Labels
+    Cht.Chart.FullSeriesCollection(1).DataLabels.Select
+    
+    'Applying the Range of the cells that will be displayed
+    'Range data is stored in vpcselect2
+    Cht.Chart.FullSeriesCollection(1).DataLabels.Format.TextFrame2.TextRange. _
+        InsertChartField msoChartFieldRange, vpcselect2, 0
+
+    'shows Value from cell and removes Value option in data label
+    Selection.ShowRange = True
+    Selection.ShowValue = False
+    
+    'Selects next chart and range data area
+    vpkount = vpkount + 1
+    vpdlcell = vpdlcell + 19
+    chartkount = chartkount + 1
+
+Loop
+
+'Ensures that the loop does not exceed 20 charts.  There are currently 20 VP HC charts
+Do While vphckount <= 21
+    'Sets the intended chart when applying data values
+    Set Cht = Worksheets("VP Overview").ChartObjects("VPHC " & vphckount)
+    
+    'Stores the range of the cells to be used for the data labels.  The data should be spaced 19 rows from each other.
+    vpcselect = "$A$" & vphccell & ":$H$" & vphccell
+    vpcselect2 = "='VP Overview'!" & vpcselect
+    
+    'Updates chart data by reselecting data range of each chart
+    Cht.Chart.SetSourceData Source:=Sheets("Qtr Allocation").Range( _
+        "K2:S2,K" & chartkount2 & ":S" & chartkount2), PlotBy:=xlRows
+    
+    'Removes data label positioning and reapplying at top of line
+    Cht.Chart.SetElement (msoElementDataLabelNone)
+    Cht.Chart.SetElement (msoElementDataLabelTop)
+    
+    'Applying data labels
+    Cht.Chart.ApplyDataLabels
+    
+    'Selecting the Label Option 'Value from cells' in Data Labels
+    Cht.Chart.FullSeriesCollection(1).DataLabels.Select
+    
+    'Applying the Range of the cells that will be displayed
+    'Range data is stored in vpcselect2
+    Cht.Chart.FullSeriesCollection(1).DataLabels.Format.TextFrame2.TextRange. _
+        InsertChartField msoChartFieldRange, vpcselect2, 0
+
+    'shows Value from cell and removes Value option in data label
+    Selection.ShowRange = True
+    Selection.ShowValue = False
+    
+    'Selects next chart and range data area
+    vphckount = vphckount + 1
+    vphccell = vphccell + 19
+    chartkount2 = chartkount2 + 1
+Loop
+
+'Protect VP Overview and preventing any accidental edits
+Sheet1.Protect , Contents:=True, UserInterfaceOnly:=True, AllowFormattingCells:=True, AllowFormattingColumns:=True, AllowFormattingRows:=True, DrawingObjects:=False
+'Allows user to hide/unhide rows in Protected Sheets
+Sheet1.EnableOutlining = True
+
+
+
+End Sub
