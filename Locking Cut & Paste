@@ -1,0 +1,17 @@
+Option Explicit
+Private Sub Workbook_SheetSelectionChange(ByVal Sh As Object, _
+ByVal Target As Excel.Range)
+
+'Prevents Cut/Paste function in workbook
+'To ensure excel function integrity, use Copy/Paste function, then clear the contents from source location.  Next, sort the data to ensure blank row is on bottom of table.
+Select Case Application.CutCopyMode
+Case Is = False
+'do nothing
+Case Is = xlCopy
+'do nothing
+Case Is = xlCut
+MsgBox "Please DO NOT Cut and Paste. Use Copy and Paste; then clear the content from the source."
+Application.CutCopyMode = False 'clear clipboard and cancel cut
+End Select
+
+End Sub
