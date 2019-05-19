@@ -1,0 +1,23 @@
+Sub Worksheet_Change(ByVal Target As Range)
+Dim keycells As Range
+
+'Setting Range of Cells that will be monitored
+Set keycells = Range("C2:S2")
+
+'If monitored cells (headers in VP Allocation/HC Table) are changed, headers from other tables will be changed accordingly
+If Not Application.Intersect(keycells, Range(Target.Address)) _
+    Is Nothing Then
+    
+    'All Allocation section headers are changed to VP Allocation headers
+    Range("W2:AD2").Value = Range("C2:J2").Value
+    Range("AH2:AO2").Value = Range("C2:J2").Value
+    
+    'All HC section headers are changed to VP HC Headers
+    Range("AQ2:AX2").Value = Range("L2:S2").Value
+    
+End If
+
+
+
+
+End Sub
