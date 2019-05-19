@@ -1,0 +1,53 @@
+Private Sub ConButton_Click()
+
+'Unlocks Conference Overview and allowing macro to run and edit necessry cells
+Sheet3.Unprotect
+
+
+Dim Cht As ChartObject
+
+
+conkount = 1
+concell = 14
+
+'Apply data labels for Site Allocation Charts in "Site Allocation" sheet
+Do While conkount <= 20
+    'Select the intended chart from a specific spreadsheet when applying data values
+    Set Cht = Worksheets("Conference Overview").ChartObjects("Con " & conkount)
+    
+    'Stores the range of the cells to be used for the data labels.  The data should be spaced 19 rows from each other.
+    vpcselect = "$A$" & concell & ":$H$" & concell
+    vpcselect2 = "='Conference Overview'!" & vpcselect
+    
+    'Removes data label positioning and reapplying at top of line
+    Cht.Chart.SetElement (msoElementDataLabelNone)
+    Cht.Chart.SetElement (msoElementDataLabelTop)
+    
+    'Applying data labels
+    Cht.Chart.ApplyDataLabels
+    
+    'Selecting the Label Option 'Value from cells' in Data Labels
+    Cht.Chart.FullSeriesCollection(1).DataLabels.Select
+    
+    'Applying the Range of the cells that will be displayed
+    'Range data is stored in vpcselect2
+    Cht.Chart.FullSeriesCollection(1).DataLabels.Format.TextFrame2.TextRange. _
+        InsertChartField msoChartFieldRange, vpcselect2, 0
+
+    'shows Value from cell and removes Value option in data label
+    Selection.ShowRange = True
+    Selection.ShowValue = False
+    
+    'Selects next chart and range data area
+    conkount = conkount + 1
+    concell = concell + 19
+Loop
+
+'Locks Conference Overview to prevent accidental editing
+Sheet3.Protect , Contents:=True, UserInterfaceOnly:=True, AllowFormattingCells:=True, AllowFormattingColumns:=True, AllowFormattingRows:=True, DrawingObjects:=False
+
+'Allows user to hide/unhide rows in Protected Sheets
+Sheet3.EnableOutlining = True
+
+
+End Sub
