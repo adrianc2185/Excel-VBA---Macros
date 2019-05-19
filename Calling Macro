@@ -1,0 +1,22 @@
+Private Sub RAllButton3_Click()
+
+'Unlocks all locked sheets and allowing macro to run and edit necessary cells
+Sheet1.Unprotect
+Sheet2.Unprotect
+Sheet3.Unprotect
+
+'Runs all macros from all Overview sheets.  This allows the data labels from all charts within workbook to be refreshed
+Sheets("VP Overview").VPButton.Value = True
+Sheets("Site Overview").SiteButton.Value = True
+Sheets("Conference Overview").ConButton.Value = True
+
+'Locks all Overview sheets and preventing any accidental edits
+Sheet1.Protect , Contents:=True, UserInterfaceOnly:=True, AllowFormattingCells:=True, AllowFormattingColumns:=True, AllowFormattingRows:=True, DrawingObjects:=False
+Sheet2.Protect , Contents:=True, UserInterfaceOnly:=True, AllowFormattingCells:=True, AllowFormattingColumns:=True, AllowFormattingRows:=True, DrawingObjects:=False
+Sheet3.Protect , Contents:=True, UserInterfaceOnly:=True, AllowFormattingCells:=True, AllowFormattingColumns:=True, AllowFormattingRows:=True, DrawingObjects:=False
+
+'Allows user to hide/unhide rows in Protected Sheets
+Sheet1.EnableOutlining = True
+Sheet2.EnableOutlining = True
+Sheet3.EnableOutlining = True
+End Sub
